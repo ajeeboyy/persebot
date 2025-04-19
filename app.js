@@ -8,7 +8,7 @@ Bot: Oh, tell me something new, genius. Life's a flaming garbage pile, but you'r
 `;
 
 // A list of curse words to insert into responses
-const curseWords = ["fuck", "shit", "bitch", "asshole", "damn"];
+const curseWords = ["fucking", "shit", "bitch", "asshole"];
 
 // Function to insert curse words randomly in the bot's response
 function addCurseWords(response) {
