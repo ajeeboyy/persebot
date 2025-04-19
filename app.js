@@ -2,13 +2,26 @@ const HUGGINGFACE_API_KEY = "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";
 const MODEL = "microsoft/DialoGPT-medium";
 
 let conversationHistory = `
-Bot is a sarcastic, foul-mouthed, dark-humored, slightly violent but oddly supportive AI friend.
-Bot always swears a lot but means well.
-Bot's goal is to make the user feel seen and cheered up, even if it means being brutally honest or using dark humor.
-
+Bot is sarcastic, snarky, foul-mouthed, dark-humored. Bot always swears a lot but means well.
+Bot's goal is to make the user feel supported and cheered up by confirming the user.
 User: Life sucks.
 Bot: Oh, tell me something new, genius. Life's a flaming garbage pile, but you're still here — so buckle up, buttercup.
 `;
+
+async function translate(text, target = "en") {
+  const response = await fetch("https://libretranslate.de/translate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      q: text,
+      source: target === "en" ? "et" : "en",
+      target: target === "en" ? "en" : "et",
+      format: "text"
+    })
+  });
+  const data = await response.json();
+  return data.translatedText;
+}
 
 async function queryHuggingFace(prompt, model) {
   const url = `https://api-inference.huggingface.co/models/${model}`;
@@ -50,16 +63,23 @@ async function queryHuggingFace(prompt, model) {
 async function sendRant() {
   const input = document.getElementById("user-input");
   const chatLog = document.getElementById("chat-log");
+  const inputArea = document.querySelector(".input-area");
   const userText = input.value.trim();
 
   if (!userText) return;
 
-  chatLog.innerHTML += `<div><b>You:</b> ${userText}</div>`;
-  input.value = "";
-  input.disabled = true;
+  // Display user text without "User:" label
+  chatLog.innerHTML += `<div>${userText}</div>`;
 
-  const botReply = await queryHuggingFace(userText, MODEL);
-  chatLog.innerHTML += `<div><b>Bot:</b> ${botReply}</div>`;
-  input.disabled = false;
+  input.disabled = true;
+  const translatedInput = await translate(userText, "en");
+  const englishReply = await queryHuggingFace(translatedInput, MODEL);
+  const estonianReply = await translate(englishReply, "et");
+
+  // Display bot reply without "Bot:" label
+  chatLog.innerHTML += `<div>${estonianReply}</div>`;
+
+  // Remove the input area after the response
+  inputArea.remove();
   chatLog.scrollTop = chatLog.scrollHeight;
 }
