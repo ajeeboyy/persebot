@@ -10,21 +10,6 @@ User: Life sucks.
 Bot: Oh, tell me something new, genius. Life's a flaming garbage pile, but you're still here — so buckle up, buttercup.
 `;
 
-async function translate(text, target = "en") {
-  const response = await fetch("https://libretranslate.de/translate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      q: text,
-      source: target === "en" ? "et" : "en",
-      target: target === "en" ? "en" : "et",
-      format: "text"
-    })
-  });
-  const data = await response.json();
-  return data.translatedText;
-}
-
 async function queryHuggingFace(prompt, model) {
   const url = `https://api-inference.huggingface.co/models/${model}`;
   try {
@@ -69,15 +54,12 @@ async function sendRant() {
 
   if (!userText) return;
 
-  chatLog.innerHTML += `<div><b>Sina:</b> ${userText}</div>`;
+  chatLog.innerHTML += `<div><b>You:</b> ${userText}</div>`;
   input.value = "";
   input.disabled = true;
 
-  const translatedInput = await translate(userText, "en");
-  const englishReply = await queryHuggingFace(translatedInput, MODEL);
-  const estonianReply = await translate(englishReply, "et");
-
-  chatLog.innerHTML += `<div><b>Bot:</b> ${estonianReply}</div>`;
+  const botReply = await queryHuggingFace(userText, MODEL);
+  chatLog.innerHTML += `<div><b>Bot:</b> ${botReply}</div>`;
   input.disabled = false;
   chatLog.scrollTop = chatLog.scrollHeight;
 }
