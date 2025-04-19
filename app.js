@@ -58,24 +58,18 @@ async function queryHuggingFace(prompt, model) {
 }
 
 async function sendRant() {
-  const userInput = document.getElementById("user-input").value;
-  if (!userInput) return;
+  const input = document.getElementById("user-input");
+  const chatLog = document.getElementById("chat-log");
+  const userText = input.value.trim();
 
-  // Add user input to the conversation
-  conversationHistory += `User: ${userInput}\n`;
+  if (!userText) return;
 
-  // Display user message
-  const conversationDiv = document.getElementById("conversation");
-  conversationDiv.innerHTML += `<p><strong>User:</strong> ${userInput}</p>`;
+  chatLog.innerHTML += `<div><b>You:</b> ${userText}</div>`;
+  input.value = "";
+  input.disabled = true;
 
-  // Hide the input field and button after click
-  document.getElementById("user-input").style.display = "none";
-  document.getElementById("rant-button").style.display = "none";
-
-  // Get bot response
-  const botReply = await queryHuggingFace(userInput);
-
-  // Add bot reply to conversation
-  conversationHistory += `Bot: ${botReply}\n`;
-  conversationDiv.innerHTML += `<p><strong>Bot:</strong> ${botReply}</p>`;
+  const botReply = await queryHuggingFace(userText, MODEL);
+  chatLog.innerHTML += `<div><b>Bot:</b> ${botReply}</div>`;
+  input.disabled = false;
+  chatLog.scrollTop = chatLog.scrollHeight;
 }
