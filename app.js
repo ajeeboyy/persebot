@@ -65,21 +65,19 @@ async function queryHuggingFace(prompt, model) {
 async function sendRant() {
   const input = document.getElementById("user-input");
   const chatLog = document.getElementById("chat-log");
-  const inputArea = document.querySelector(".input-area");
   const userText = input.value.trim();
 
   if (!userText) return;
 
   chatLog.innerHTML += `<div><b>Sina:</b> ${userText}</div>`;
-
+  input.value = "";
   input.disabled = true;
+
   const translatedInput = await translate(userText, "en");
   const englishReply = await queryHuggingFace(translatedInput, MODEL);
   const estonianReply = await translate(englishReply, "et");
 
   chatLog.innerHTML += `<div><b>Bot:</b> ${estonianReply}</div>`;
-
-  // Remove the input area after the response
-  inputArea.remove();
+  input.disabled = false;
   chatLog.scrollTop = chatLog.scrollHeight;
 }
