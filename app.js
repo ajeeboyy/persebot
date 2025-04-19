@@ -23,7 +23,7 @@ async function queryHuggingFace(prompt, model) {
         parameters: {
           temperature: 0.8,
           top_p: 0.95,
-          max_new_tokens: 60
+          max_new_tokens: 200
         }
       })
     });
