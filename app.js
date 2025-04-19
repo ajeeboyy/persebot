@@ -30,9 +30,9 @@ async function queryHuggingFace(prompt, model) {
       body: JSON.stringify({
         inputs: `${conversationHistory}\nUser: ${prompt}\nBot:`,
         parameters: {
-          temperature: 0.8,
+          temperature: 0.5,
           top_p: 0.95,
-          max_new_tokens: 200
+          max_new_tokens: 300
         }
       })
     });
