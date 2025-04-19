@@ -11,16 +11,16 @@ Bot: Oh, tell me something new, genius. Life's a flaming garbage pile, but you'r
 `;
 
 async function queryHuggingFace(prompt, model) {
-  const url = \`https://api-inference.huggingface.co/models/\${model}\`;
+  const url = `https://api-inference.huggingface.co/models/${model}`;
   try {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Authorization": \`Bearer \${HUGGINGFACE_API_KEY}\`,
+        "Authorization": `Bearer ${HUGGINGFACE_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        inputs: conversationHistory + \`\nUser: \${prompt}\nBot:\`,
+        inputs: `${conversationHistory}\nUser: ${prompt}\nBot:`,
         parameters: {
           temperature: 0.8,
           top_p: 0.95,
@@ -29,21 +29,21 @@ async function queryHuggingFace(prompt, model) {
       })
     });
 
-    if (!response.ok) throw new Error(\`Server error: \${response.status}\`);
+    if (!response.ok) throw new Error(`Server error: ${response.status}`);
     const result = await response.json();
 
     let botReply = "";
     if (Array.isArray(result) && result[0]?.generated_text) {
-      botReply = result[0].generated_text.replace(conversationHistory + \`\nUser: \${prompt}\nBot:\`, "").trim();
+      botReply = result[0].generated_text.replace(`${conversationHistory}\nUser: ${prompt}\nBot:`, "").trim();
     } else if (result?.generated_text) {
-      botReply = result.generated_text.replace(conversationHistory + \`\nUser: \${prompt}\nBot:\`, "").trim();
+      botReply = result.generated_text.replace(`${conversationHistory}\nUser: ${prompt}\nBot:`, "").trim();
     }
 
-    conversationHistory += \`\nUser: \${prompt}\nBot: \${botReply}\`;
+    conversationHistory += `\nUser: ${prompt}\nBot: ${botReply}`;
     return botReply || "I'm speechless... even for me. Try again, human.";
   } catch (error) {
     console.error("Error from Hugging Face:", error);
-    return \`Oops! My virtual brain had a meltdown. Try again in a sec.\`;
+    return "Oops! My virtual brain had a meltdown. Try again in a sec.";
   }
 }
 
@@ -54,12 +54,12 @@ async function sendRant() {
 
   if (!userText) return;
 
-  chatLog.innerHTML += \`<div><b>You:</b> \${userText}</div>\`;
+  chatLog.innerHTML += `<div><b>You:</b> ${userText}</div>`;
   input.value = "";
   input.disabled = true;
 
   const botReply = await queryHuggingFace(userText, MODEL);
-  chatLog.innerHTML += \`<div><b>Bot:</b> \${botReply}</div>\`;
+  chatLog.innerHTML += `<div><b>Bot:</b> ${botReply}</div>`;
   input.disabled = false;
   chatLog.scrollTop = chatLog.scrollHeight;
 }
