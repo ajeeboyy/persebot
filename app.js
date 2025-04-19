@@ -1,4 +1,4 @@
-const HUGGINGFACE_API_KEY = "YOUR_HUGGINGFACE_API_KEY";  // Replace with your Hugging Face token
+const HUGGINGFACE_API_KEY = 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;  // Replace with your Hugging Face token
 let conversationHistory = `
 Bot is a sarcastic, foul-mouthed, dark-humored, slightly violent but oddly supportive AI friend.
 Bot always swears a lot but means well.
@@ -14,7 +14,7 @@ async function queryHuggingFace(prompt, model) {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${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}`,
+        "Authorization": `Bearer ${HUGGINGFACE_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ inputs: conversationHistory + "\nUser: " + prompt + "\nBot:" })
