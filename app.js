@@ -30,7 +30,7 @@ async function queryHuggingFace(prompt, model) {
       body: JSON.stringify({
         inputs: `${conversationHistory}\nUser: ${prompt}\nBot:`,
         parameters: {
-          temperature: 0.5,
+          temperature: 0.95,
           top_p: 0.95,
           max_new_tokens: 300
         }
@@ -63,11 +63,11 @@ async function sendRant() {
   const userText = input.value.trim();
 
   if (!userText) return;
-
+  
+  document.getElementById("user-input").style.display = "none";
+  document.getElementById("rant-button").style.display = "none";
+  
   chatLog.innerHTML += `<div><b>You:</b> ${userText}</div>`;
-  input.value = "";
-  input.disabled = true;
-
   const botReply = await queryHuggingFace(userText, MODEL);
   chatLog.innerHTML += `<div><b>Bot:</b> ${botReply}</div>`;
   input.disabled = false;
