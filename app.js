@@ -1,4 +1,4 @@
-const HUGGINGFACE_API_KEY = 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;  // Replace with your Hugging Face token
+const HUGGINGFACE_API_KEY = "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";  // Replace with your Hugging Face token
 let conversationHistory = `
 Bot is a sarcastic, foul-mouthed, dark-humored, slightly violent but oddly supportive AI friend.
 Bot always swears a lot but means well.
