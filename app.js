@@ -10,9 +10,23 @@ User: Life sucks.
 Bot: Oh, tell me something new, genius. Life's a flaming garbage pile, but you're still here — so buckle up, buttercup.
 `;
 
-async function queryHuggingFace(prompt) {
-  console.log("Querying Hugging Face with:", prompt);
-  const url = `https://api-inference.huggingface.co/models/${MODEL}`;
+async function translate(text, target = "en") {
+  const response = await fetch("https://libretranslate.de/translate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      q: text,
+      source: target === "en" ? "et" : "en",
+      target: target === "en" ? "en" : "et",
+      format: "text"
+    })
+  });
+  const data = await response.json();
+  return data.translatedText;
+}
+
+async function queryHuggingFace(prompt, model) {
+  const url = `https://api-inference.huggingface.co/models/${model}`;
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -33,8 +47,6 @@ async function queryHuggingFace(prompt) {
     if (!response.ok) throw new Error(`Server error: ${response.status}`);
     const result = await response.json();
 
-    console.log("Hugging Face API Response:", result);
-    
     let botReply = "";
     if (Array.isArray(result) && result[0]?.generated_text) {
       botReply = result[0].generated_text.replace(`${conversationHistory}\nUser: ${prompt}\nBot:`, "").trim();
@@ -42,7 +54,8 @@ async function queryHuggingFace(prompt) {
       botReply = result.generated_text.replace(`${conversationHistory}\nUser: ${prompt}\nBot:`, "").trim();
     }
 
-    return botReply || "I'm speechless... even for me. Try again in a sec.";
+    conversationHistory += `\nUser: ${prompt}\nBot: ${botReply}`;
+    return botReply || "I'm speechless... even for me. Try again, human.";
   } catch (error) {
     console.error("Error from Hugging Face:", error);
     return "Oops! My virtual brain had a meltdown. Try again in a sec.";
@@ -57,12 +70,14 @@ async function sendRant() {
 
   if (!userText) return;
 
-  // Display user text
-  chatLog.innerHTML += `<div>${userText}</div>`;
-  input.disabled = true;
+  chatLog.innerHTML += `<div><b>Sina:</b> ${userText}</div>`;
 
-  const englishReply = await queryHuggingFace(userText);
-  chatLog.innerHTML += `<div>${englishReply}</div>`;
+  input.disabled = true;
+  const translatedInput = await translate(userText, "en");
+  const englishReply = await queryHuggingFace(translatedInput, MODEL);
+  const estonianReply = await translate(englishReply, "et");
+
+  chatLog.innerHTML += `<div><b>Bot:</b> ${estonianReply}</div>`;
 
   // Remove the input area after the response
   inputArea.remove();
