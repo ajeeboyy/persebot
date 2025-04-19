@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Whine Line (AI Edition)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="chatbox">
+  <div id="modelSelector">
+    <label for="model">Bot Mood:</label>
+    <select id="model">
+      <option value="microsoft/DialoGPT-medium">Sarcastic (DialoGPT)</option>
+      <option value="facebook/blenderbot-400M-distill">Empathetic (BlenderBot)</option>
+    </select>
+  </div>
+  <div id="messages"></div>
+  <div id="inputBox">
+    <input type="text" id="userInput" placeholder="Type your rant..." />
+    <button onclick="sendRant()">Send</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(120deg, #ffe4e4, #ffccff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#chatbox {
+  width: 95%;
+  max-width: 400px;
+  height: 90vh;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#modelSelector {
+  margin: 10px;
+  text-align: center;
+}
+
+#modelSelector select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.msg {
+  margin: 5px 0;
+  word-wrap: break-word;
+}
+
+.user {
+  text-align: right;
+  color: #333;
+}
+
+.bot {
+  text-align: left;
+  color: gray;
+}
+
+.typing {
+  color: #999;
+  font-style: italic;
+}
+
+#inputBox {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+#inputBox input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 0;
+}
+
+#inputBox button {
+  padding: 12px 15px;
+  border: none;
+  background: #ff4d4d;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 0;
+}
