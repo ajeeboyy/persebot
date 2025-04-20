@@ -57,19 +57,22 @@ async function queryHuggingFace(prompt, model) {
   }
 }
 
-async function sendRant() {
-  const input = document.getElementById("user-input");
-  const chatLog = document.getElementById("chat-log");
-  const userText = input.value.trim();
+function sendRant() {
+  const input = document.getElementById('user-input');
+  const chatLog = document.getElementById('chat-log');
 
-  if (!userText) return;
+  if (input.value.trim() === "") return;
 
-  chatLog.innerHTML += `<div><b>You:</b> ${userText}</div>`;
+  const userMessage = document.createElement('div');
+  userMessage.style.textAlign = 'right';
+  userMessage.innerHTML = `😡: ${input.value}`;
+  chatLog.prepend(userMessage);
+
+  const botMessage = document.createElement('div');
+  botMessage.style.textAlign = 'left';
+  botMessage.innerHTML = `🤖: That's rough, buddy.`;
+
+  setTimeout(() => chatLog.prepend(botMessage), 500);
+
   input.value = "";
-  input.disabled = true;
-
-  const botReply = await queryHuggingFace(userText, MODEL);
-  chatLog.innerHTML += `<div><b>Bot:</b> ${botReply}</div>`;
-  input.disabled = false;
-  chatLog.scrollTop = chatLog.scrollHeight;
 }
