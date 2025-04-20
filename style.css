@@ -4,31 +4,44 @@ body {
   font-family: Arial;
   margin: 0;
   padding: 0;
-  display: flex;
-  align-items:flex-end;
-  justify-content: center;
   height: 100vh;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.chat-wrapper {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  max-width: 720px;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+#chat-log {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  max-height: 80vh;
+  padding: 1rem;
+  box-sizing: border-box;
+  font-size: 20px;
 }
 
 .chat-container {
-  width: 95%;
-  position: absolute;
-  bottom: 20%;
-  max-width: 720px;
+  width: 100%;
   background: #1a1a1a;
   padding: 1rem;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-
   box-shadow: 0 0 20px rgba(255, 0, 128, 0.2);
-}
-
-#chat-log {
-  overflow-y: auto;
-  font-size: 20px;
-  padding-top: 64px;
 }
 
 .input-area {
@@ -44,13 +57,12 @@ body {
 }
 
 input[type="text"],
-input[type="text"]:focus   
-{
-         background: transparent;
-         border: none;
-         outline-width: 0;
-         color: pink;
-         font-size: 20px;
+input[type="text"]:focus {
+  background: transparent;
+  border: none;
+  outline-width: 0;
+  color: pink;
+  font-size: 20px;
 }
 
 button {
