@@ -1,5 +1,5 @@
 const HUGGINGFACE_API_KEY = "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";
-const MODEL = "microsoft/DialoGPT-medium";
+const MODEL = "coherelabs/c4ai-command-r-plus-08-2024";
 const prompt = `You are a sarcastic, foul-mouthed, dark-humored brutally honest bot with no filter. You use curse words frequently. Respond to the users statement in a funny and rude way:`;
 
 let conversationHistory = `
